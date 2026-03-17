@@ -62,6 +62,28 @@ export default function Home() {
   const [success, setSuccess] = React.useState(false);
   const [correctCount, setCorrectCount] = React.useState(0);
 
+  const nextButton = (
+    <button
+      onClick={handleNext}
+      style={{
+        display: 'block',
+        margin: '8px auto 0',
+        padding: '10px 24px',
+        fontSize: '16px',
+        borderRadius: '6px',
+        border: '2px solid #0070f3',
+        background: '#0070f3',
+        color: '#fff',
+        cursor: 'pointer',
+        transition: 'background 0.2s, color 0.2s',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+        outline: 'none',
+      }}
+    >
+      Next Question
+    </button>
+  );
+
   function handleAnswer(answer: string) {
     setSelected(answer);
     if (answer === questions[current].correct) {
@@ -101,79 +123,61 @@ export default function Home() {
           margin: 0
         }}
       />
-      <div style={{ marginTop: 24, padding: '30px', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
+      <div style={{ marginTop: 24, padding: '30px', border: '1px solid #e0e0e0', borderRadius: '8px', textAlign: 'center' }}>
         {current < questions.length ? (
           <>
             <p style={{ fontSize: '18px', color: '#666', marginBottom: '20px' }}>Question {current + 1}/10</p>
-            <h2>{questions[current].question}</h2>
-            <div style={{ display: "flex", gap: 12 }}>
-              {questions[current].answers.map((answer) => (
-                <button
-                  key={answer}
-                  onClick={() => handleAnswer(answer)}
-                  disabled={selected !== null}
-                  style={{
-                    padding: '10px 24px',
-                    fontSize: '16px',
-                    borderRadius: '6px',
-                    border: '2px solid #0070f3',
-                    background: selected === answer ? '#0070f3' : '#fff',
-                    color: selected === answer ? '#fff' : '#0070f3',
-                    cursor: selected !== null ? 'not-allowed' : 'pointer',
-                    transition: 'background 0.2s, color 0.2s',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                    outline: 'none',
-                  }}
-                >
-                  {answer}
-                </button>
-              ))}
+            <h2 style={{ fontSize: '1.2em' }}>{questions[current].question}</h2>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
+              {questions[current].answers.map((answer) => {
+                const isCorrect = answer === questions[current].correct;
+                const isSelected = answer === selected;
+                let bg = '#fff';
+                let col = '#0070f3';
+                if (selected !== null) {
+                  if (isCorrect) {
+                    bg = 'green';
+                    col = 'white';
+                  } else if (isSelected) {
+                    bg = 'red';
+                    col = 'white';
+                  }
+                }
+                return (
+                  <button
+                    key={answer}
+                    onClick={() => handleAnswer(answer)}
+                    disabled={selected !== null}
+                    style={{
+                      width: '100%',
+                      padding: '10px 24px',
+                      fontSize: '16px',
+                      borderRadius: '6px',
+                      border: '2px solid #0070f3',
+                      background: bg,
+                      color: col,
+                      cursor: selected !== null ? 'not-allowed' : 'pointer',
+                      transition: 'background 0.2s, color 0.2s',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                      outline: 'none',
+                    }}
+                  >
+                    {answer}
+                  </button>
+                );
+              })}
             </div>
             {feedback && <p style={{ marginTop: 16 }}>{feedback}</p>}
             {!success && selected !== null && feedback && (
               <div style={{ marginTop: 16 }}>
                 <p style={{ color: '#ff6b6b', fontWeight: 'bold' }}>Correct answer: {questions[current].correct}</p>
-                <button
-                  onClick={handleNext}
-                  style={{
-                    marginTop: 8,
-                    padding: '10px 24px',
-                    fontSize: '16px',
-                    borderRadius: '6px',
-                    border: '2px solid #0070f3',
-                    background: '#0070f3',
-                    color: '#fff',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s, color 0.2s',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                    outline: 'none',
-                  }}
-                >
-                  Next Question
-                </button>
+                {nextButton}
               </div>
             )}
             {success && current < questions.length - 1 && (
               <div style={{ marginTop: 16 }}>
                 <p style={{ color: 'green', fontWeight: 'bold' }}>Success! 🎉</p>
-                <button
-                  onClick={handleNext}
-                  style={{
-                    marginTop: 8,
-                    padding: '10px 24px',
-                    fontSize: '16px',
-                    borderRadius: '6px',
-                    border: '2px solid #0070f3',
-                    background: '#0070f3',
-                    color: '#fff',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s, color 0.2s',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                    outline: 'none',
-                  }}
-                >
-                  Next Question
-                </button>
+                {nextButton}
               </div>
             )}
             {success && current === questions.length - 1 && (
@@ -182,7 +186,8 @@ export default function Home() {
                 <button
                   onClick={handleNext}
                   style={{
-                    marginTop: 8,
+                    display: 'block',
+                    margin: '8px auto 0',
                     padding: '10px 24px',
                     fontSize: '16px',
                     borderRadius: '6px',
