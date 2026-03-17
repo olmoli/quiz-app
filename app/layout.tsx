@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Image from "next/image";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,7 +28,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <header>
+          <Image
+            src="/logo_quiz.jpg"
+            alt="Famous computer games trivia"
+            width={800}
+            height={400}
+            className="w-full h-auto"
+          />
+        </header>
+        <div className="max-w-2xl mx-auto px-4 py-6">
+          {children}
+        </div>
       </body>
     </html>
   );
