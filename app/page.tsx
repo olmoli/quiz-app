@@ -5,56 +5,63 @@ import React from "react";
 export default function Home() {
   const questions = [
     {
-      question: "Which game features a character named Mario who saves Princess Peach?",
-      answers: ["Sonic the Hedgehog", "Super Mario Bros.", "Minecraft"],
-      correct: "Super Mario Bros."
-    },
-    {
-      question: "In which game do players build with blocks and survive in a pixel world?",
-      answers: ["Minecraft", "Fortnite", "The Sims"],
+      question: "Which game usually starts with gathering basic resources like wood to craft your first tools?",
+      answers: ["Terraria", "Minecraft", "Rust"],
       correct: "Minecraft"
     },
     {
-      question: "Which battle royale game includes characters building walls and towers during fights?",
-      answers: ["PUBG", "Fortnite", "Apex Legends"],
-      correct: "Fortnite"
-    },
-    {
-      question: "Which game series features the character Sonic, a very fast blue hedgehog?",
-      answers: ["Sonic the Hedgehog", "Crash Bandicoot", "Rayman"],
+      question: "In which game do you collect rings that scatter when you get hit?",
+      answers: ["Rayman", "Sonic the Hedgehog", "Crash Bandicoot"],
       correct: "Sonic the Hedgehog"
     },
     {
-      question: "In which game do players steal cars and explore a large open city?",
-      answers: ["Need for Speed", "Grand Theft Auto", "Watch Dogs"],
+      question: "Which game is known for allowing players to quickly build structures during combat?",
+      answers: ["Apex Legends", "Fortnite", "Overwatch"],
+      correct: "Fortnite"
+    },
+    {
+      question: "In which game can you freely explore a city, complete missions, and steal vehicles?",
+      answers: ["Watch Dogs", "Saints Row", "Grand Theft Auto"],
       correct: "Grand Theft Auto"
     },
     {
-      question: "Which game lets players simulate life by building houses and controlling characters?",
-      answers: ["Animal Crossing", "The Sims", "SimCity"],
+      question: "Which game focuses on controlling characters’ daily lives, including jobs, relationships, and home design?",
+      answers: ["SimCity", "The Sims", "Animal Crossing"],
       correct: "The Sims"
     },
     {
-      question: "Which popular game features characters called 'creepers'?",
-      answers: ["Terraria", "Roblox", "Minecraft"],
-      correct: "Minecraft"
+      question: "In which game do you choose a civilization and guide it from ancient times into the future?",
+      answers: ["Age of Empires", "Civilization", "Total War"],
+      correct: "Civilization"
     },
     {
-      question: "Which game is about catching and training creatures called Pokémon?",
-      answers: ["Pokémon", "Digimon", "Monster Hunter"],
-      correct: "Pokémon"
+      question: "Which classic game features a character eating pellets while avoiding ghosts in a maze?",
+      answers: ["Bomberman", "Pac-Man", "Tetris"],
+      correct: "Pac-Man"
     },
     {
-      question: "In which game do players race cars in realistic tracks and vehicles?",
-      answers: ["FIFA", "Gran Turismo", "NBA 2K"],
-      correct: "Gran Turismo"
+      question: "In which game do you explore dungeons, solve puzzles, and battle enemies like Ganon?",
+      answers: ["Dark Souls", "The Legend of Zelda", "Skyrim"],
+      correct: "The Legend of Zelda"
     },
     {
-      question: "Which game is famous for the phrase 'Victory Royale'?",
-      answers: ["Fortnite", "Call of Duty", "Counter-Strike"],
-      correct: "Fortnite"
+      question: "Which game is known for its team-based matches involving planting or defusing a bomb?",
+      answers: ["Rainbow Six Siege", "Counter-Strike", "Valorant"],
+      correct: "Counter-Strike"
+    },
+    {
+      question: "In which game do you control a plumber who travels through pipes and fights Bowser?",
+      answers: ["Donkey Kong", "Super Mario Bros.", "Kirby"],
+      correct: "Super Mario Bros."
     }
   ];
+
+  const [shuffledQuestions, setShuffledQuestions] = React.useState<typeof questions>([]);
+
+  React.useEffect(() => {
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    setShuffledQuestions(shuffled);
+  }, []);
 
   const [current, setCurrent] = React.useState(0);
   const [selected, setSelected] = React.useState<string | null>(null);
@@ -86,7 +93,7 @@ export default function Home() {
 
   function handleAnswer(answer: string) {
     setSelected(answer);
-    if (answer === questions[current].correct) {
+    if (answer === shuffledQuestions[current].correct) {
       setFeedback("Correct");
       setSuccess(true);
     } else {
@@ -124,13 +131,13 @@ export default function Home() {
         }}
       />
       <div style={{ marginTop: 24, padding: '30px', border: '1px solid #e0e0e0', borderRadius: '8px', textAlign: 'center' }}>
-        {current < questions.length ? (
+        {current < shuffledQuestions.length ? (
           <>
             <p style={{ fontSize: '18px', color: '#666', marginBottom: '20px' }}>Question {current + 1}/10</p>
-            <h2 style={{ fontSize: '1.2em' }}>{questions[current].question}</h2>
+            <h2 style={{ fontSize: '1.2em' }}>{shuffledQuestions[current].question}</h2>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-              {questions[current].answers.map((answer) => {
-                const isCorrect = answer === questions[current].correct;
+              {shuffledQuestions[current].answers.map((answer) => {
+                const isCorrect = answer === shuffledQuestions[current].correct;
                 const isSelected = answer === selected;
                 let bg = '#fff';
                 let col = '#0070f3';
@@ -170,17 +177,17 @@ export default function Home() {
             {feedback && <p style={{ marginTop: 16 }}>{feedback}</p>}
             {!success && selected !== null && feedback && (
               <div style={{ marginTop: 16 }}>
-                <p style={{ color: '#ff6b6b', fontWeight: 'bold' }}>Correct answer: {questions[current].correct}</p>
+                <p style={{ color: '#ff6b6b', fontWeight: 'bold' }}>Correct answer: {shuffledQuestions[current].correct}</p>
                 {nextButton}
               </div>
             )}
-            {success && current < questions.length - 1 && (
+            {success && current < shuffledQuestions.length - 1 && (
               <div style={{ marginTop: 16 }}>
                 <p style={{ color: 'green', fontWeight: 'bold' }}>Success! 🎉</p>
                 {nextButton}
               </div>
             )}
-            {success && current === questions.length - 1 && (
+            {success && current === shuffledQuestions.length - 1 && (
               <div style={{ marginTop: 16 }}>
                 <p style={{ color: 'green', fontWeight: 'bold' }}>Success! 🎉</p>
                 <button
