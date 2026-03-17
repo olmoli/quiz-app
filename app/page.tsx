@@ -74,7 +74,9 @@ export default function Home() {
   }
 
   function handleNext() {
-    setCorrectCount((prev) => prev + 1);
+    if (success) {
+      setCorrectCount((prev) => prev + 1);
+    }
     setCurrent((prev) => prev + 1);
     setSelected(null);
     setFeedback("");
@@ -89,68 +91,120 @@ export default function Home() {
           50%, 100% { opacity: 0.3; }
         }
       `}</style>
-      <h1 style={{
-        fontSize: '72px',
-        animation: 'blink 1s infinite',
-        textAlign: 'center',
-        margin: '40px 0'
-      }}>
-        Famous computer games trivia!
-      </h1>
+      <img 
+        src="/logo_quiz.jpg" 
+        alt="Famous computer games trivia" 
+        style={{
+          width: '100%',
+          height: 'auto',
+          display: 'block',
+          margin: 0
+        }}
+      />
       <div style={{ marginTop: 24, padding: '30px', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
-        <p style={{ fontSize: '18px', color: '#666', marginBottom: '20px' }}>Question {current + 1}/10</p>
-        <h2>{questions[current].question}</h2>
-        <div style={{ display: "flex", gap: 12 }}>
-          {questions[current].answers.map((answer) => (
-            <button
-              key={answer}
-              onClick={() => handleAnswer(answer)}
-              disabled={selected !== null}
-              style={{
-                padding: '10px 24px',
-                fontSize: '16px',
-                borderRadius: '6px',
-                border: '2px solid #0070f3',
-                background: selected === answer ? '#0070f3' : '#fff',
-                color: selected === answer ? '#fff' : '#0070f3',
-                cursor: selected !== null ? 'not-allowed' : 'pointer',
-                transition: 'background 0.2s, color 0.2s',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                outline: 'none',
-              }}
-            >
-              {answer}
-            </button>
-          ))}
-        </div>
-        {feedback && <p style={{ marginTop: 16 }}>{feedback}</p>}
-        {success && current < questions.length - 1 && (
-          <div style={{ marginTop: 16 }}>
-            <p style={{ color: 'green', fontWeight: 'bold' }}>Success! 🎉</p>
-            <button
-              onClick={handleNext}
-              style={{
-                marginTop: 8,
-                padding: '10px 24px',
-                fontSize: '16px',
-                borderRadius: '6px',
-                border: '2px solid #0070f3',
-                background: '#0070f3',
-                color: '#fff',
-                cursor: 'pointer',
-                transition: 'background 0.2s, color 0.2s',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                outline: 'none',
-              }}
-            >
-              Next Question
-            </button>
-          </div>
-        )}
-        {success && current === questions.length - 1 && (
-          <div style={{ marginTop: 16 }}>
-            <p style={{ color: 'green', fontWeight: 'bold', fontSize: '24px' }}>Quiz Complete! 🎉</p>
-            <p style={{ fontSize: '18px', marginTop: '16px' }}>{correctCount + 1}/10 questions answered correctly</p>
+        {current < questions.length ? (
+          <>
+            <p style={{ fontSize: '18px', color: '#666', marginBottom: '20px' }}>Question {current + 1}/10</p>
+            <h2>{questions[current].question}</h2>
+            <div style={{ display: "flex", gap: 12 }}>
+              {questions[current].answers.map((answer) => (
+                <button
+                  key={answer}
+                  onClick={() => handleAnswer(answer)}
+                  disabled={selected !== null}
+                  style={{
+                    padding: '10px 24px',
+                    fontSize: '16px',
+                    borderRadius: '6px',
+                    border: '2px solid #0070f3',
+                    background: selected === answer ? '#0070f3' : '#fff',
+                    color: selected === answer ? '#fff' : '#0070f3',
+                    cursor: selected !== null ? 'not-allowed' : 'pointer',
+                    transition: 'background 0.2s, color 0.2s',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                    outline: 'none',
+                  }}
+                >
+                  {answer}
+                </button>
+              ))}
+            </div>
+            {feedback && <p style={{ marginTop: 16 }}>{feedback}</p>}
+            {!success && selected !== null && feedback && (
+              <div style={{ marginTop: 16 }}>
+                <p style={{ color: '#ff6b6b', fontWeight: 'bold' }}>Correct answer: {questions[current].correct}</p>
+                <button
+                  onClick={handleNext}
+                  style={{
+                    marginTop: 8,
+                    padding: '10px 24px',
+                    fontSize: '16px',
+                    borderRadius: '6px',
+                    border: '2px solid #0070f3',
+                    background: '#0070f3',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s, color 0.2s',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                    outline: 'none',
+                  }}
+                >
+                  Next Question
+                </button>
+              </div>
+            )}
+            {success && current < questions.length - 1 && (
+              <div style={{ marginTop: 16 }}>
+                <p style={{ color: 'green', fontWeight: 'bold' }}>Success! 🎉</p>
+                <button
+                  onClick={handleNext}
+                  style={{
+                    marginTop: 8,
+                    padding: '10px 24px',
+                    fontSize: '16px',
+                    borderRadius: '6px',
+                    border: '2px solid #0070f3',
+                    background: '#0070f3',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s, color 0.2s',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                    outline: 'none',
+                  }}
+                >
+                  Next Question
+                </button>
+              </div>
+            )}
+            {success && current === questions.length - 1 && (
+              <div style={{ marginTop: 16 }}>
+                <p style={{ color: 'green', fontWeight: 'bold' }}>Success! 🎉</p>
+                <button
+                  onClick={handleNext}
+                  style={{
+                    marginTop: 8,
+                    padding: '10px 24px',
+                    fontSize: '16px',
+                    borderRadius: '6px',
+                    border: '2px solid #0070f3',
+                    background: '#0070f3',
+                    color: '#fff',
+                    cursor: 'pointer',
+                    transition: 'background 0.2s, color 0.2s',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+                    outline: 'none',
+                  }}
+                >
+                  See Results
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '40px 0' }}>
+            <p style={{ fontSize: '48px', color: 'green', fontWeight: 'bold', marginBottom: '16px' }}>Congratulations! 🎉</p>
+            <p style={{ fontSize: '28px', marginBottom: '24px' }}>You answered {correctCount} out of 10 questions correctly!</p>
+            <p style={{ fontSize: '18px', color: '#666' }}>Great job on completing the quiz!</p>
           </div>
         )}
       </div>
