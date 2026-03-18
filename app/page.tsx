@@ -83,10 +83,10 @@ export default function Home() {
           )}
         </>
       ) : (
-        <div className="text-center p-12">
-          <p className="text-7xl text-green-600 font-bold mb-6">Congratulations! 🎉</p>
-          <p className="text-4xl mb-8 text-gray-800">You answered {correctCount} out of {shuffledQuestions.length} questions correctly!</p>
-          <p className="text-xl text-gray-600">Great job on completing the quiz!</p>
+        <div className="text-center p-8 sm:p-12 max-w-md mx-auto px-4">
+          <p className="text-4xl sm:text-5xl md:text-7xl text-green-600 font-bold mb-6">Congratulations! 🎉</p>
+          <p className="text-xl sm:text-2xl md:text-4xl mb-8 text-gray-800">You answered {correctCount} out of {shuffledQuestions.length} questions correctly!</p>
+          <p className="text-lg sm:text-xl text-gray-600">Great job on completing the quiz!</p>
         </div>
       )}
     </main>
